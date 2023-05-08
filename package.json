@@ -2,13 +2,21 @@
   "private": true,
   "scripts": {
     "postinstall": "dotnet tool restore",
-    "start": "dotnet fable watch src --run webpack-dev-server",
-    "build": "dotnet fable src && webpack"
+    "fable": "dotnet fable src/App -o src/App-ts --lang ts --fableLib fable-library --noReflection",
+    "start": "npm run fable -- --watch --run vite",
+    "build": "npm run fable && tsc --outDir ./dist --declaration --noEmit false"
   },
   "devDependencies": {
     "webpack": "^5.75.0",
     "webpack-cli": "^4.10.0",
-    "webpack-dev-server": "^4.11.1"
+    "webpack-dev-server": "^4.11.1",
+    "typescript": "^4.9.3",
+    "vite": "^4.2.1"
+  },
+  "dependencies": {
+    "fable-library": "^0.1.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   },
   "version": "1.0.0"
 }

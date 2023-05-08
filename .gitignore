@@ -309,3 +309,6 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+
+# Generated source files
+src/generated/
