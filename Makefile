@@ -15,8 +15,13 @@ npm-install: package.json package-lock.json
 	@echo "Installing npm packages..."
 	@npm install
 
+.PHONY: paket-restore
+paket-restore: 
+	@echo "Restoring paket packages..."
+	@dotnet paket restore
+
 .PHONY: restore
-restore: restore-tools npm-install
+restore: restore-tools paket-restore npm-install
 	@echo "Restoring packages and tools..."
 
 .PHONY: fsharp-to-JS
