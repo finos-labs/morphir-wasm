@@ -1,9 +1,9 @@
 module App
 
 open System
-open Fable.Core
 open Fable.Core.JS
 open Fable.SimpleJson
+open FSharp.Collections
 
 let readInput () =
     let chunkSize = 1024
@@ -22,18 +22,21 @@ let readInput () =
             for i = 0 to bytesRead - 1 do
                 inputChunks.Add(buffer[i])
     
-    let (_, finalBuffer) =
-        inputChunks
-        |> Seq.fold (fun acc chunk ->
-            acc
-        ) (0, Constructors.Array.Create totalBytes)
+    printfn "inputChunks.size: %A" inputChunks.Count
     
+    let finalBuffer = inputChunks.ToArray()
+    
+    printfn "Buffer: %A" finalBuffer
     let jsonString = System.Text.UTF8Encoding.UTF8.GetString(finalBuffer)
+    printfn $"JSON> {jsonString}"
     SimpleJson.parse(jsonString)
     //JSON.parse(TextDecoder().decode(finalBuffer)) |> unbox<string>
 
 [<EntryPoint>]
 let main (argv:string array) =
+    printfn ""
+    printfn "argv: %A" argv
+    printfn "Here we are"
     let input = readInput ()
     printfn "Hello World from Fable and F#"
     printfn $"> {Json.stringify(input)}"

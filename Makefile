@@ -1,8 +1,9 @@
 .DEFAULT_GOAL := build
 
 .PHONY: run
-run: restore
+run: restore build
 	@echo "Running..."
+	@echo "{'a':1}" | @wasmtime dist/morphir.wasm 
 
 .PHONY: restore-tools
 restore-tools:
@@ -32,9 +33,21 @@ fsharp-to-TS: restore
 compile: fsharp-to-JS fsharp-to-TS
 	@echo "Compiling..." 
 
-build: restore compile
+src/generated/App-js/App.js: fsharp-to-JS
+
+.PHONY: esbuild
+esbuild: src/generated/App-js/App.js
+	@echo "Building with esbuild..."
+	@npx esbuild src/generated/App-js/App.js --bundle --outfile=src/generated/App-js/App.bundle.js --minify --sourcemap
+
+.PHONY: build
+build: restore esbuild
 	@echo "Building..."	
-	@npx webpack
+	@javy compile -o dist/morphir.wasm src/generated/App-js/App.bundle.js 
+
+.PHONY: rebuild
+rebuild: clean compile build
+	@echo "Rebuilding..."
 
 clean: 
 	@echo "Cleaning..."
