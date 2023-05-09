@@ -3,10 +3,11 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Javy.fs" />
+    <Compile Include="Builtins.fs" />
     <Compile Include="App.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fable.Core" Version="4.0.0" />
+    <PackageReference Include="Fable.SimpleJson" Version="3.24.0" />
   </ItemGroup>
 </Project>

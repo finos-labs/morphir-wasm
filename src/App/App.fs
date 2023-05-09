@@ -2,13 +2,39 @@ module App
 
 open System
 open Fable.Core
+open Fable.Core.JS
+open Fable.SimpleJson
 
-let readInput ():string =
+let readInput () =
     let chunkSize = 1024
-    let inputChunks = ResizeArray<byte>()
-    ""
+    let inputChunks = ResizeArray<uint8> ()
+    let mutable totalBytes = 0
+    let mutable next = true
+    
+    while(next) do
+        let buffer = Constructors.Uint8Array.Create(chunkSize)
+        let fd = 0 // Stdin file descriptor
+        let bytesRead = Javy.IO.readSync(fd, buffer)
+        totalBytes <- totalBytes + bytesRead
+        if (bytesRead = 0) then
+             next <- false
+        else
+            for i = 0 to bytesRead - 1 do
+                inputChunks.Add(buffer[i])
+    
+    let (_, finalBuffer) =
+        inputChunks
+        |> Seq.fold (fun acc chunk ->
+            acc
+        ) (0, Constructors.Array.Create totalBytes)
+    
+    let jsonString = System.Text.UTF8Encoding.UTF8.GetString(finalBuffer)
+    SimpleJson.parse(jsonString)
+    //JSON.parse(TextDecoder().decode(finalBuffer)) |> unbox<string>
 
-let input = readInput ()
-printfn "Hello World from Fable and F#"
-
-printfn "> %s" input
+[<EntryPoint>]
+let main (argv:string array) =
+    let input = readInput ()
+    printfn "Hello World from Fable and F#"
+    printfn $"> {Json.stringify(input)}"
+    0
