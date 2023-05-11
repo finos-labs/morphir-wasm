@@ -34,15 +34,19 @@ fsharp-to-TS: restore
 	@echo "Compiling F# to TS..."
 	@dotnet dotnet fable src/App/App.fsproj -o src/generated/App-ts --lang ts --fableLib fable-library --noReflection
 
+.PHONY: fable-compile
+fable-compile: fsharp-to-JS fsharp-to-TS
+	@echo "Running Fable Compile step..."
+
 .PHONY: compile
-compile: fsharp-to-JS fsharp-to-TS
-	@echo "Compiling..." 
+compile: morphir-elm fable-compile
 
 src/generated/App-js/App.js: fsharp-to-JS
 
 .PHONY: esbuild
-esbuild: src/generated/App-js/App.js
+esbuild: src/generated/App-js/App.js src/App/Morphir.Elm.CLI.js
 	@echo "Building with esbuild..."
+	@npx esbuild src/generated/App-js/App.js --bundle --outfile=src/generated/App-js/App.bundle.js --minify --sourcemap
 	@npx esbuild src/generated/App-js/App.js --bundle --outfile=src/generated/App-js/App.bundle.js --minify --sourcemap
 
 .PHONY: build
@@ -58,3 +62,10 @@ clean:
 	@echo "Cleaning..."
 	@dotnet clean
 	@rm -rf src/generated/
+
+.PHONY: morphir-elm
+morphir-elm: 
+	@echo "Building morphir-elm..."
+	@cd paket-files/finos/morphir-elm && npm install && npx gulp build
+	@cp paket-files/finos/morphir-elm/cli2/Morphir.Elm.CLI.js src/App/Morphir.Elm.CLI.js
+	

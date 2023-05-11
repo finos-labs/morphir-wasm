@@ -313,3 +313,6 @@ __pycache__/
 # Generated source files
 src/generated/
 dist/
+
+# Elm
+elm-stuff/

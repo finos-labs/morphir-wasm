@@ -4,5 +4,5 @@ storage: none
 framework: auto-detect
 github finos/morphir-elm:main
 nuget Fable.Core 4.0.0
-nuget Fable.SimpleJson 3.24.0
 nuget FSharp.Core content: none
+nuget Thoth.Json

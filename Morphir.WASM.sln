@@ -16,9 +16,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".solution", ".solution", "{
 		package.json = package.json
 		global.json = global.json
 		README.md = README.md
+		elm-tooling.json = elm-tooling.json
+		elm.json = elm.json
 	EndProjectSection
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "App", "src\App\App.fsproj", "{3A6102BE-52F1-442C-9952-B02EAE4A3A3C}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Morphir", "src\Morphir\Morphir.fsproj", "{3A6102BE-52F1-442C-9952-B02EAE4A3A3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

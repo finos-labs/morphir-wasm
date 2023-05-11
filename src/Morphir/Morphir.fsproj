@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <FableJsDestFolder>$(MSBuildThisFileDirectory)../generated/App-js/</FableJsDestFolder>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="**\*.elm;**\*.js;**\*.ts" Exclude="fable_modules\**\*" />
+    <Compile Include="Builtins.fs" />
+    <Compile Include="Stub.fs" />
+    <Compile Include="Engine.fs" />
+    <Compile Include="Demo.fs" />
+    <Compile Include="App.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Engine\" />
+  </ItemGroup>
+  <Target Name="CopyContentFiles" AfterTargets="Build">
+    <Copy SourceFiles="@(Content)" DestinationFiles="@(Content->'$(FableJsDestFolder)%(RelativeDir)%(Filename)%(Extension)')" />
+  </Target>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
+</Project>
